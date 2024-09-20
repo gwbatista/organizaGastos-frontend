@@ -1,25 +1,272 @@
 <template>
-  <div>
-    <h2>Lista de Gastos</h2>
-    <ul>
-      <li v-for="gasto in gastos" :key="gasto.id">
-        {{ gasto.descricao }} - {{ gasto.valor }} - {{ gasto.data_vencimento }}
-        <button @click="deletarGasto(gasto.id)">Deletar</button>
-      </li>
-    </ul>
+  <v-card class="pa-3" style="max-width: 100%;">
+    <v-toolbar flat>
+      <v-toolbar-title>Controle de Gastos</v-toolbar-title>
+      <v-divider class="mx-4" inset vertical></v-divider>
+      <v-spacer></v-spacer>
+      <v-dialog v-model="dialog" max-width="500px">
+        <template v-slot:activator="{ props }">
+          <v-btn class="mb-2" color="primary" dark v-bind="props">
+            Adicionar Gasto
+          </v-btn>
+        </template>
+        <v-card>
+          <v-card-title>
+            <span class="text-h5">{{ formTitle }}</span>
+          </v-card-title>
+          <v-card-text>
+            <v-container>
+              <v-row>
+                <v-col cols="12" md="4" sm="6">
+                  <v-text-field v-model="editedItem.descricao" label="Descrição"></v-text-field>
+                </v-col>
+                <v-col cols="12" md="4" sm="6">
+                  <v-text-field v-model="editedItem.valor" label="Valor"></v-text-field>
+                </v-col>
+                <v-col cols="12" md="4" sm="6">
+                  <v-text-field v-model="editedItem.data_vencimento" label="Data de Vencimento"></v-text-field>
+                </v-col>
+                <v-col cols="12" md="4" sm="6">
+                  <v-text-field v-model="editedItem.janeiro" label="Janeiro"></v-text-field>
+                </v-col>
+                <v-col cols="12" md="4" sm="6">
+                  <v-text-field v-model="editedItem.fevereiro" label="Fevereiro"></v-text-field>
+                </v-col>
+                <v-col cols="12" md="4" sm="6">
+                  <v-text-field v-model="editedItem.marco" label="Março"></v-text-field>
+                </v-col>
+                <v-col cols="12" md="4" sm="6">
+                  <v-text-field v-model="editedItem.abril" label="Abril"></v-text-field>
+                </v-col>
+                <v-col cols="12" md="4" sm="6">
+                  <v-text-field v-model="editedItem.maio" label="Maio"></v-text-field>
+                </v-col>
+                <v-col cols="12" md="4" sm="6">
+                  <v-text-field v-model="editedItem.junho" label="Junho"></v-text-field>
+                </v-col>
+                <v-col cols="12" md="4" sm="6">
+                  <v-text-field v-model="editedItem.julho" label="Julho"></v-text-field>
+                </v-col>
+                <v-col cols="12" md="4" sm="6">
+                  <v-text-field v-model="editedItem.agosto" label="Agosto"></v-text-field>
+                </v-col>
+                <v-col cols="12" md="4" sm="6">
+                  <v-text-field v-model="editedItem.setembro" label="Setembro"></v-text-field>
+                </v-col>
+                <v-col cols="12" md="4" sm="6">
+                  <v-text-field v-model="editedItem.outubro" label="Outubro"></v-text-field>
+                </v-col>
+                <v-col cols="12" md="4" sm="6">
+                  <v-text-field v-model="editedItem.novembro" label="Novembro"></v-text-field>
+                </v-col>
+                <v-col cols="12" md="4" sm="6">
+                  <v-text-field v-model="editedItem.dezembro" label="Dezembro"></v-text-field>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue-darken-1" variant="text" @click="close">Cancelar</v-btn>
+            <v-btn color="blue-darken-1" variant="text" @click="save">Salvar</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <v-dialog v-model="dialogDelete" max-width="500px">
+        <v-card>
+          <v-card-title class="text-h5">Tem certeza de que deseja deletar este gasto?</v-card-title>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue-darken-1" variant="text" @click="closeDelete">Cancelar</v-btn>
+            <v-btn color="blue-darken-1" variant="text" @click="deleteItemConfirm">OK</v-btn>
+            <v-spacer></v-spacer>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-toolbar>
+    
+    <v-data-table
+      :headers="headers"
+      :items="gastos"
+      class="elevation-1"
+      style="width: 100%;"
+    >
+
+    <template v-slot:item.janeiro="{ item }">
+  <div :class="{ pago: item.janeiroPago }" style="position: relative; display: inline-block;">
+    <v-checkbox v-model="item.janeiroPago" style="opacity: 0; position: absolute; top: 0; left: 0; width: 24px; height: 24px;" />
+    <span style="position: relative; z-index: 1;">{{ item.janeiro }}</span>
   </div>
+</template>
+
+<template v-slot:item.fevereiro="{ item }">
+  <div :class="{ pago: item.fevereiroPago }" style="position: relative; display: inline-block;">
+    <v-checkbox v-model="item.fevereiroPago" style="opacity: 0; position: absolute; top: 0; left: 0; width: 24px; height: 24px;" />
+    <span style="position: relative; z-index: 1;">{{ item.fevereiro }}</span>
+  </div>
+</template>
+
+<template v-slot:item.marco="{ item }">
+  <div :class="{ pago: item.marcoPago }" style="position: relative; display: inline-block;">
+    <v-checkbox v-model="item.marcoPago" style="opacity: 0; position: absolute; top: 0; left: 0; width: 24px; height: 24px;" />
+    <span style="position: relative; z-index: 1;">{{ item.marco }}</span>
+  </div>
+</template>
+
+<template v-slot:item.abril="{ item }">
+  <div :class="{ pago: item.abrilPago }" style="position: relative; display: inline-block;">
+    <v-checkbox v-model="item.abrilPago" style="opacity: 0; position: absolute; top: 0; left: 0; width: 24px; height: 24px;" />
+    <span style="position: relative; z-index: 1;">{{ item.abril }}</span>
+  </div>
+</template>
+
+<template v-slot:item.maio="{ item }">
+  <div :class="{ pago: item.maioPago }" style="position: relative; display: inline-block;">
+    <v-checkbox v-model="item.maioPago" style="opacity: 0; position: absolute; top: 0; left: 0; width: 24px; height: 24px;" />
+    <span style="position: relative; z-index: 1;">{{ item.maio }}</span>
+  </div>
+</template>
+
+<template v-slot:item.junho="{ item }">
+  <div :class="{ pago: item.junhoPago }" style="position: relative; display: inline-block;">
+    <v-checkbox v-model="item.junhoPago" style="opacity: 0; position: absolute; top: 0; left: 0; width: 24px; height: 24px;" />
+    <span style="position: relative; z-index: 1;">{{ item.junho }}</span>
+  </div>
+</template>
+
+<template v-slot:item.julho="{ item }">
+  <div :class="{ pago: item.julhoPago }" style="position: relative; display: inline-block;">
+    <v-checkbox v-model="item.julhoPago" style="opacity: 0; position: absolute; top: 0; left: 0; width: 24px; height: 24px;" />
+    <span style="position: relative; z-index: 1;">{{ item.julho }}</span>
+  </div>
+</template>
+
+<template v-slot:item.agosto="{ item }">
+  <div :class="{ pago: item.agostoPago }" style="position: relative; display: inline-block;">
+    <v-checkbox v-model="item.agostoPago" style="opacity: 0; position: absolute; top: 0; left: 0; width: 24px; height: 24px;" />
+    <span style="position: relative; z-index: 1;">{{ item.agosto }}</span>
+  </div>
+</template>
+
+<template v-slot:item.setembro="{ item }">
+  <div :class="{ pago: item.setembroPago }" style="position: relative; display: inline-block;">
+    <v-checkbox v-model="item.setembroPago" style="opacity: 0; position: absolute; top: 0; left: 0; width: 24px; height: 24px;" />
+    <span style="position: relative; z-index: 1;">{{ item.setembro }}</span>
+  </div>
+</template>
+
+<template v-slot:item.outubro="{ item }">
+  <div :class="{ pago: item.outubroPago }" style="position: relative; display: inline-block;">
+    <v-checkbox v-model="item.outubroPago" style="opacity: 0; position: absolute; top: 0; left: 0; width: 24px; height: 24px;" />
+    <span style="position: relative; z-index: 1;">{{ item.outubro }}</span>
+  </div>
+</template>
+
+<template v-slot:item.novembro="{ item }">
+  <div :class="{ pago: item.novembroPago }" style="position: relative; display: inline-block;">
+    <v-checkbox v-model="item.novembroPago" style="opacity: 0; position: absolute; top: 0; left: 0; width: 24px; height: 24px;" />
+    <span style="position: relative; z-index: 1;">{{ item.novembro }}</span>
+  </div>
+</template>
+
+<template v-slot:item.dezembro="{ item }">
+  <div :class="{ pago: item.dezembroPago }" style="position: relative; display: inline-block;">
+    <v-checkbox v-model="item.dezembroPago" style="opacity: 0; position: absolute; top: 0; left: 0; width: 24px; height: 24px;" />
+    <span style="position: relative; z-index: 1;">{{ item.dezembro }}</span>
+  </div>
+</template>
+
+
+      <template v-slot:item.acao="{ item }">
+        <v-icon class="me-2" size="small" @click="editItem(item)">mdi-pencil</v-icon>
+        <v-icon size="small" @click="deleteItem(item)">mdi-delete</v-icon>
+      </template>
+    </v-data-table>
+  </v-card>
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      gastos: []
-    };
+  data: () => ({
+    dialog: false,
+    dialogDelete: false,
+    headers: [
+      { title: 'Descrição', value: 'descricao' },
+      { title: 'Valor', value: 'valor', sortable: true },
+      { title: 'Vencimento', value: 'data_vencimento', sortable: true },
+      { title: 'Janeiro', value: 'janeiro' },
+      { title: 'Fevereiro', value: 'fevereiro' },
+      { title: 'Março', value: 'marco' },
+      { title: 'Abril', value: 'abril' },
+      { title: 'Maio', value: 'maio' },
+      { title: 'Junho', value: 'junho' },
+      { title: 'Julho', value: 'julho' },
+      { title: 'Agosto', value: 'agosto' },
+      { title: 'Setembro', value: 'setembro' },
+      { title: 'Outubro', value: 'outubro' },
+      { title: 'Novembro', value: 'novembro' },
+      { title: 'Dezembro', value: 'dezembro' },
+      { title: 'Ações', value: 'acao', sortable: false },
+    ],
+    gastos: [],
+    editedIndex: -1,
+    editedItem: {
+      descricao: '',
+      valor: 0,
+      data_vencimento: '',
+      janeiro: 0,
+      fevereiro: 0,
+      marco: 0,
+      abril: 0,
+      maio: 0,
+      junho: 0,
+      julho: 0,
+      agosto: 0,
+      setembro: 0,
+      outubro: 0,
+      novembro: 0,
+      dezembro: 0,
+      pago: false,
+    },
+    defaultItem: {
+      descricao: '',
+      valor: 0,
+      data_vencimento: '',
+      janeiro: 0,
+      fevereiro: 0,
+      marco: 0,
+      abril: 0,
+      maio: 0,
+      junho: 0,
+      julho: 0,
+      agosto: 0,
+      setembro: 0,
+      outubro: 0,
+      novembro: 0,
+      dezembro: 0,
+      pago: false,
+    },
+  }),
+
+  computed: {
+    formTitle () {
+      return this.editedIndex === -1 ? 'Novo Gasto' : 'Editar Gasto';
+    },
   },
-  async created() {
-    await this.carregarGastos();
+
+  watch: {
+    dialog (val) {
+      val || this.close();
+    },
+    dialogDelete (val) {
+      val || this.closeDelete();
+    },
   },
+
+  created () {
+    this.carregarGastos();
+  },
+
   methods: {
     async carregarGastos() {
       try {
@@ -33,6 +280,74 @@ export default {
         console.error('Erro ao carregar gastos:', error);
       }
     },
+
+    async save() {
+      if (this.editedIndex > -1) {
+        // Atualizar gasto existente
+        await this.atualizarGasto(this.editedItem);
+        Object.assign(this.gastos[this.editedIndex], this.editedItem);
+      } else {
+        // Adicionar novo gasto
+        const newItem = await this.adicionarGasto();
+        this.gastos.push({ ...this.editedItem, id: newItem.id });
+      }
+      this.close();
+    },
+
+    async adicionarGasto() {
+      try {
+        const response = await fetch('http://localhost:3000/gastos', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(this.editedItem)
+        });
+        if (!response.ok) {
+          throw new Error('Erro ao adicionar gasto');
+        }
+        const data = await response.json();
+        return data; // Retorna o novo item com o ID
+      } catch (error) {
+        console.error('Erro ao adicionar gasto:', error);
+      }
+    },
+
+    async atualizarGasto(item) {
+      try {
+        const response = await fetch(`http://localhost:3000/gastos/${item.id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(item)
+        });
+        if (!response.ok) {
+          throw new Error('Erro ao atualizar gasto');
+        }
+      } catch (error) {
+        console.error('Erro ao atualizar gasto:', error);
+      }
+    },
+
+    editItem(item) {
+      this.editedIndex = this.gastos.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialog = true;
+    },
+
+    deleteItem(item) {
+      this.editedIndex = this.gastos.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialogDelete = true;
+    },
+
+    async deleteItemConfirm() {
+      await this.deletarGasto(this.editedItem.id);
+      this.gastos.splice(this.editedIndex, 1);
+      this.closeDelete();
+    },
+
     async deletarGasto(id) {
       try {
         const response = await fetch(`http://localhost:3000/gastos/${id}`, {
@@ -41,11 +356,37 @@ export default {
         if (!response.ok) {
           throw new Error('Erro ao deletar gasto');
         }
-        this.gastos = this.gastos.filter(gasto => gasto.id !== id);
       } catch (error) {
         console.error('Erro ao deletar gasto:', error);
       }
-    }
-  }
+    },
+
+    close() {
+      this.dialog = false;
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
+    },
+
+    closeDelete() {
+      this.dialogDelete = false;
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
+    },
+  },
 };
 </script>
+
+<style scoped>
+.pago {
+  background-color: green; 
+  color: white; 
+}
+
+span {
+  padding: 14px
+}
+</style>

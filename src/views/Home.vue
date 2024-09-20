@@ -1,17 +1,15 @@
+<!-- Home.vue -->
 <template>
-  <div>
-    <GastoForm @gasto-adicionado="carregarGastos" />
+  <v-container>
     <GastoList ref="gastoList" />
-  </div>
+  </v-container>
 </template>
 
 <script>
-import GastoForm from '@/components/GastoForm.vue';
 import GastoList from '@/components/GastoList.vue';
 
 export default {
   components: {
-    GastoForm,
     GastoList
   },
   methods: {
