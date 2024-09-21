@@ -8,20 +8,25 @@
     </v-app-bar>
 
     <!-- Menu lateral -->
-    <v-navigation-drawer v-model="drawer" app permanent>
-      <v-list dense>
-        <v-list-item-group>
-          <v-list-item v-for="(item, i) in menuItems" :key="i" @click="navigate(item.route)">
-            <v-list-item-icon>
-              <v-icon>{{ item.icon }}</v-icon>
-            </v-list-item-icon>
-            <v-list-item-content>
-              <v-list-item-title>{{ item.title }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list-item-group>
-      </v-list>
-    </v-navigation-drawer>
+<v-navigation-drawer v-model="drawer" app permanent width="100">
+  <v-list dense>
+    <v-list-item-group>
+      <v-list-item
+        v-for="(item, i) in menuItems"
+        :key="i"
+        @click="navigate(item.route)"
+        class="mt-3 ml-4" 
+      >
+        <v-list-item-icon>
+          <v-icon size="18">{{ item.icon }}</v-icon>
+        </v-list-item-icon>
+        <v-list-item-content>
+          <v-list-item-title :style="{ fontSize: '15px' }">{{ item.title }}</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+    </v-list-item-group>
+  </v-list>
+</v-navigation-drawer>
 
     <!-- Conteúdo principal -->
     <v-main>
@@ -43,9 +48,8 @@ export default {
     return {
       drawer: true, // Controle do menu lateral
       menuItems: [
-        { title: 'Dashboard', icon: 'mdi-view-dashboard', route: '/' },
-        { title: 'Relatórios', icon: 'mdi-file-chart', route: '/relatorios' },
-        { title: 'Configurações', icon: 'mdi-cog', route: '/configuracoes' }
+        { title: '2024', icon: 'mdi mdi-calendar-edit-outline', route: '/' },
+        { title: 'Metas', icon: 'mdi mdi-bullseye-arrow', route: '/metas' }
       ],
     };
   },
@@ -65,4 +69,5 @@ export default {
   .footer {
     font-size: 12px; 
   }
+
 </style>

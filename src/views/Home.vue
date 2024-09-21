@@ -7,6 +7,8 @@
 
 <script>
 import GastoList from '@/components/GastoList.vue';
+import GuiList from '@/components/GuiList.vue';
+import EmpresaList from '@/components/EmpresaList.vue';
 
 export default {
   components: {
@@ -15,6 +17,8 @@ export default {
   methods: {
     carregarGastos() {
       this.$refs.gastoList.carregarGastos();
+      this.$refs.guiList.carregarGastos();
+      this.$refs.empresaList.carregarGastos();
     }
   }
 };
