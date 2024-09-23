@@ -5,7 +5,15 @@
     <v-app-bar app color="#37474F" dark>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>OrganizaGastos</v-toolbar-title>
+      <!-- Ícone da calculadora no lado direito -->
+      <v-spacer></v-spacer> <!-- Espaçamento entre o título e o ícone -->
+      <v-icon @click="dialog = true" class="mr-4" color="white">mdi-calculator</v-icon>
     </v-app-bar>
+
+     <!-- Modal da Calculadora -->
+    <v-dialog v-model="dialog" max-width="400">
+      <Calculadora />
+    </v-dialog>
 
     <!-- Menu lateral -->
 <v-navigation-drawer v-model="drawer" app permanent width="100">
@@ -43,15 +51,22 @@
 </template>
 
 <script>
+import Calculadora from './components/Calculadora.vue';
+
 export default {
   data() {
     return {
       drawer: true, // Controle do menu lateral
+      dialog: false, // Controle do modal da calculadora
       menuItems: [
         { title: '2024', icon: 'mdi mdi-calendar-edit-outline', route: '/' },
-        { title: 'Metas', icon: 'mdi mdi-bullseye-arrow', route: '/metas' }
+        { title: 'Metas', icon: 'mdi mdi-bullseye-arrow', route: '/metas' },
+        { title: 'Dashboard', icon: 'mdi mdi-view-dashboard-outline', route: '/dashboard' }
       ],
     };
+  },
+  components: {
+    Calculadora // Registrar o componente Calculator
   },
   methods: {
     navigate(route) {

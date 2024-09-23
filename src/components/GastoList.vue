@@ -222,7 +222,7 @@
 
   <v-dialog v-model="showTotals" max-width="500px">
   <template v-slot:activator="{ props }">
-    <v-btn color="primary" style="margin-top: 16px;" v-bind="props">
+    <v-btn color="primary" style="margin-top: 16px; margin-bottom: 16px;"  v-bind="props">
       Total - Moradia
     </v-btn>
   </template>

@@ -2,6 +2,8 @@
 <template>
   <v-container>
     <GastoList ref="gastoList" />
+    <GuiList ref="guiList" />
+    <EmpresaList ref="empresaList" />
   </v-container>
 </template>
 
@@ -12,7 +14,9 @@ import EmpresaList from '@/components/EmpresaList.vue';
 
 export default {
   components: {
-    GastoList
+    GastoList,
+    GuiList,
+    EmpresaList
   },
   methods: {
     carregarGastos() {
