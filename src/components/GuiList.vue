@@ -97,7 +97,7 @@
     @click="togglePago(item, 'janeiro')"
     outlined
   >
-    {{ item.janeiro }}
+  R$ {{ item.janeiro }}
   </v-chip>
 </template>
 
@@ -107,7 +107,7 @@
     @click="togglePago(item, 'fevereiro')"
     outlined
   >
-    {{ item.fevereiro }}
+  R$ {{ item.fevereiro }}
   </v-chip>
 </template>
 
@@ -117,7 +117,7 @@
     @click="togglePago(item, 'marco')"
     outlined
   >
-    {{ item.marco }}
+  R$ {{ item.marco }}
   </v-chip>
 </template>
 
@@ -127,7 +127,7 @@
     @click="togglePago(item, 'abril')"
     outlined
   >
-    {{ item.abril }}
+  R$ {{ item.abril }}
   </v-chip>
 </template>
 
@@ -137,7 +137,7 @@
     @click="togglePago(item, 'maio')"
     outlined
   >
-    {{ item.maio }}
+  R$ {{ item.maio }}
   </v-chip>
 </template>
 
@@ -147,7 +147,7 @@
     @click="togglePago(item, 'junho')"
     outlined
   >
-    {{ item.junho }}
+  R$ {{ item.junho }}
   </v-chip>
 </template>
 
@@ -157,7 +157,7 @@
     @click="togglePago(item, 'julho')" 
     outlined
   >
-    {{ item.julho }}
+  R$ {{ item.julho }}
   </v-chip>
 </template>
 
@@ -167,7 +167,7 @@
     @click="togglePago(item, 'agosto')"
     outlined
   >
-    {{ item.agosto }}
+  R$ {{ item.agosto }}
   </v-chip>
 </template>
 
@@ -177,7 +177,7 @@
     @click="togglePago(item, 'setembro')" 
     outlined
   >
-    {{ item.setembro }}
+  R$ {{ item.setembro }}
   </v-chip>
 </template>
 
@@ -187,7 +187,7 @@
     @click="togglePago(item, 'outubro')" 
     outlined
   >
-    {{ item.outubro }}
+  R$ {{ item.outubro }}
   </v-chip>
 </template>
 
@@ -197,7 +197,7 @@
     @click="togglePago(item, 'novembro')" 
     outlined
   >
-    {{ item.novembro }}
+  R$ {{ item.novembro }}
   </v-chip>
 </template>
 
@@ -207,7 +207,7 @@
     @click="togglePago(item, 'dezembro')" 
     outlined
   >
-    {{ item.dezembro }}
+  R$ {{ item.dezembro }}
   </v-chip>
 </template>
 
@@ -269,7 +269,7 @@ export default {
     dialogDelete: false,
     headers: [
       { title: 'Descrição', value: 'descricao', fixed: true},
-      { title: 'Vencimento', value: 'data_vencimento', sortable: true},
+      { title: 'Venc.', value: 'data_vencimento', sortable: true},
       { title: 'Janeiro', value: 'janeiro' },
       { title: 'Fevereiro', value: 'fevereiro' },
       { title: 'Março', value: 'marco' },
