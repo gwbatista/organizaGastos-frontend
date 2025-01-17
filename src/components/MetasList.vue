@@ -2,13 +2,13 @@
   <p class="title">ANO 2025</p>
   <v-card class="pa-3" style="max-width: 100%;">
     <v-toolbar flat>
-      <v-toolbar-title>Moradia</v-toolbar-title>
+      <v-toolbar-title>Metas - 2025</v-toolbar-title>
       <v-divider class="mx-4" inset vertical></v-divider>
       <v-spacer></v-spacer>
       <v-dialog v-model="dialog" max-width="500px">
         <template v-slot:activator="{ props }">
           <v-btn class="mb-2" color="primary" dark v-bind="props">
-            Adicionar Gasto
+            Adicionar Meta
           </v-btn>
         </template>
         <v-card>
@@ -22,7 +22,7 @@
                   <v-text-field v-model="editedItem.descricao" label="Descrição"></v-text-field>
                 </v-col>
                 <v-col cols="12" md="12" sm="6">
-                  <v-text-field v-model="editedItem.data_vencimento" label="Data de Vencimento"></v-text-field>
+                  <v-text-field v-model="editedItem.data_vencimento" label="Total da Meta"></v-text-field>
                 </v-col>
                 <v-col cols="12" md="4" sm="6">
                   <v-text-field v-model="editedItem.janeiro" label="Janeiro"></v-text-field>
@@ -72,7 +72,7 @@
       </v-dialog>
       <v-dialog v-model="dialogDelete" max-width="500px">
         <v-card color="red">
-          <v-card-title class="text-h11">Tem certeza de que deseja deletar este gasto?</v-card-title>
+          <v-card-title class="text-h11">Tem certeza de que deseja deletar esta meta?</v-card-title>
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="black" variant="text" @click="closeDelete">Cancelar</v-btn>
@@ -220,46 +220,6 @@
     </v-data-table>
   </v-card>
 
-  <v-dialog v-model="showTotals" max-width="500px">
-  <template v-slot:activator="{ props }">
-    <v-btn color="primary" style="margin-top: 16px; margin-bottom: 16px;"  v-bind="props">
-      Total - Moradia
-    </v-btn>
-  </template>
-  
-  <v-card color="light-blue">
-    <v-card-title>Total por Mês - Moradia</v-card-title>
-    <v-card-item>
-      <div class="card-total">Janeiro: R$ {{ totalJaneiro.toFixed(2) }}</div>
-      <v-divider color="white" ></v-divider>
-      <div class="card-total">Fevereiro: R$ {{ totalFevereiro.toFixed(2) }}</div>
-      <v-divider color="white" ></v-divider>
-      <div class="card-total">Março: R$ {{ totalMarco.toFixed(2) }}</div>
-      <v-divider color="white" ></v-divider>
-      <div class="card-total">Abril: R$ {{ totalAbril.toFixed(2) }}</div>
-      <v-divider color="white" ></v-divider>
-      <div class="card-total">Maio: R$ {{ totalMaio.toFixed(2) }}</div>
-      <v-divider color="white" ></v-divider>
-      <div class="card-total">Junho: R$ {{ totalJunho.toFixed(2) }}</div>
-      <v-divider color="white" ></v-divider>
-      <div class="card-total">Julho: R$ {{ totalJulho.toFixed(2) }}</div>
-      <v-divider color="white" ></v-divider>
-      <div class="card-total">Agosto: R$ {{ totalAgosto.toFixed(2) }}</div>
-      <v-divider color="white" ></v-divider>
-      <div class="card-total">Setembro: R$ {{ totalSetembro.toFixed(2) }}</div>
-      <v-divider color="white" ></v-divider>
-      <div class="card-total">Outubro: R$ {{ totalOutubro.toFixed(2) }}</div>
-      <v-divider color="white" ></v-divider>
-      <div class="card-total">Novembro: R$ {{ totalNovembro.toFixed(2) }}</div>
-      <v-divider color="white" ></v-divider>
-      <div class="card-total">Dezembro: R$ {{ totalDezembro.toFixed(2) }}</div>
-    </v-card-item>
-    <v-card-actions>
-      <v-btn color="gray" @click="showTotals = false">Fechar</v-btn>
-    </v-card-actions>
-  </v-card>
-</v-dialog>
-
 </template>
 
 <script>
@@ -270,7 +230,7 @@ export default {
     dialogDelete: false,
     headers: [
       { title: 'Descrição', value: 'descricao', fixed: true},
-      { title: 'Venc.', value: 'data_vencimento', sortable: true},
+      { title: 'Total', value: 'data_vencimento', sortable: true},
       { title: 'Janeiro', value: 'janeiro' },
       { title: 'Fevereiro', value: 'fevereiro' },
       { title: 'Março', value: 'marco' },
@@ -351,7 +311,7 @@ export default {
 
   computed: {
     formTitle () {
-      return this.editedIndex === -1 ? 'Novo Gasto' : 'Editar Gasto';
+      return this.editedIndex === -1 ? 'Nova Meta' : 'Editar Meta';
     },
     totalJaneiro() {
     return this.gastos.reduce((total, item) => total + parseFloat(item.janeiro) || 0, 0);
@@ -402,7 +362,7 @@ export default {
 
   async mounted() {
     // Carrega os dados dos gastos quando o componente é montado
-    const response = await fetch('http://localhost:3000/gastos');
+    const response = await fetch('http://localhost:3000/metas');
     this.gastos = await response.json();
   },
 
@@ -416,7 +376,7 @@ export default {
   },
     async carregarGastos() {
   try {
-    const response = await fetch('http://localhost:3000/gastos');
+    const response = await fetch('http://localhost:3000/metas');
     if (!response.ok) {
       throw new Error('Erro ao buscar gastos');
     }
@@ -457,7 +417,7 @@ export default {
 
     async adicionarGasto() {
       try {
-        const response = await fetch('http://localhost:3000/gastos', {
+        const response = await fetch('http://localhost:3000/metas', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -476,7 +436,7 @@ export default {
 
     async atualizarGasto(item) {
       try {
-        const response = await fetch(`http://localhost:3000/gastos/${item.id}`, {
+        const response = await fetch(`http://localhost:3000/metas/${item.id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json'
@@ -497,7 +457,7 @@ export default {
     const novoStatus = !item[campoPago]; // Inverte o status de pagamento
 
     // Faz a requisição PUT para atualizar o backend
-    await fetch(`http://localhost:3000/gastos/${item.id}/${mes}`, {
+    await fetch(`http://localhost:3000/metas/${item.id}/${mes}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -534,7 +494,7 @@ export default {
 
     async deletarGasto(id) {
       try {
-        const response = await fetch(`http://localhost:3000/gastos/${id}`, {
+        const response = await fetch(`http://localhost:3000/metas/${id}`, {
           method: 'DELETE'
         });
         if (!response.ok) {
