@@ -7,7 +7,16 @@
       <v-toolbar-title>OrganizaGastos</v-toolbar-title>
       <!-- Ícone da calculadora no lado direito -->
       <v-spacer></v-spacer> <!-- Espaçamento entre o título e o ícone -->
-      <v-icon @click="dialog = true" class="mr-4" color="white">mdi-calculator</v-icon>
+      <v-icon @click="dialog = true" class="mr-4" color="white" title="Calculadora">mdi-calculator</v-icon>
+
+    <!-- Ícone para geração de PDF -->
+    <v-icon 
+        @click="gerarPdf" 
+        class="mr-4" 
+        color="white"
+        title="Gerar Relatório em PDF">
+        mdi-file-pdf-box
+      </v-icon>
     </v-app-bar>
 
      <!-- Modal da Calculadora -->
@@ -59,7 +68,7 @@ export default {
       drawer: true, // Controle do menu lateral
       dialog: false, // Controle do modal da calculadora
       menuItems: [
-        { title: '2024', icon: 'mdi mdi-calendar-edit-outline', route: '/' },
+        { title: '2025', icon: 'mdi mdi-calendar-edit-outline', route: '/' },
         { title: 'Metas', icon: 'mdi mdi-bullseye-arrow', route: '/metas' },
         { title: 'Dashboard', icon: 'mdi mdi-view-dashboard-outline', route: '/dashboard' }
       ],
@@ -71,6 +80,30 @@ export default {
   methods: {
     navigate(route) {
       this.$router.push(route);
+    },
+    gerarPdf() {
+      // Fazer requisição para o backend que gera o PDF
+      fetch('http://localhost:3000/relatorio', { method: 'GET' })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Erro ao gerar o PDF');
+          }
+          return response.blob();
+        })
+        .then(blob => {
+          // Criar URL para o arquivo PDF e iniciar download
+          const url = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', 'relatorio-gastos.pdf');
+          document.body.appendChild(link);
+          link.click();
+          link.parentNode.removeChild(link);
+        })
+        .catch(error => {
+          console.error('Erro ao gerar o PDF:', error);
+          alert('Não foi possível gerar o relatório em PDF.');
+        });
     }
   }
 };

@@ -1,5 +1,5 @@
 <template>
-  <p class="title">ANO 2024</p>
+  <p class="title">ANO 2025</p>
   <v-card class="pa-3" style="max-width: 100%;">
     <v-toolbar flat>
       <v-toolbar-title>Moradia</v-toolbar-title>
